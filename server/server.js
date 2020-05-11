@@ -1,7 +1,11 @@
 const db = require("../db/db");
-const helper = require("../helper/musixMatch");
+const { getTrackId, getTrack } = require("../helper/helper");
 const express = require("express");
 const app = express();
+const cors = require("cors");
+const path = require("path");
+
+app.use(cors());
 app.use(express.json());
 app.use(express.static("dist"));
 
@@ -9,7 +13,7 @@ app.get('/test', (req, res) => {
     res.send('hit test route');
 })
 
-app.post("/lyrics", (req, res) => {
+app.post('/lyrics', (req, res) => {
 	let data = {
 		id: "",
 		title: "",
@@ -17,7 +21,7 @@ app.post("/lyrics", (req, res) => {
 		lyrics: ""
 	};
 
-	helper.musixMatch(req.body.title, req.body.artist, (error, result) => {
+	getTrackId(req.body.title, req.body.artist, (error, result) => {
 		data.title = req.body.title;
 		data.artist = req.body.artist;
 
@@ -26,11 +30,12 @@ app.post("/lyrics", (req, res) => {
 		} else {
 			// result here is track id
 			data.id = result;
-			helper.musixMatchTrack(result, (error, result) => {
+			console.log(`data.id, ${data.id}`);
+			getTrack(result, (error, response) => {
 				if (error) {
 					console.log("error in server with musixMatchTrack", error);
 				} else {
-                    data.lyrics = result;
+                    data.lyrics = response;
 					return db
 						.addSong(data.id, data.title, data.artist, data.lyrics)
 						.then(() => {
@@ -50,5 +55,5 @@ app.post("/lyrics", (req, res) => {
 
 const port = 6000;
 app.listen(port, () => {
-	`Listening on port ${port}...`;
+	console.log(`Listening on port ${port}...`);
 });

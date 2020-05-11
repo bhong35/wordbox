@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import Lyrics from "./Lyrics";
-import { timingSafeEqual } from "crypto";
 
 export default class App extends React.Component {
 	constructor() {
@@ -15,12 +14,12 @@ export default class App extends React.Component {
 		};
 		this.recordResponse = this.recordResponse.bind(this);
 		this.searchButton = this.searchButton.bind(this);
-        this.clearInput = this.clearInput.bind(this);
+        // this.clearInput = this.clearInput.bind(this);
         this.onClick = this.onClick.bind(this);
     }
     
     onClick() {
-        axios.get('/test')
+        axios.get('http://localhost:6000/test')
         .then(data => {
             console.log(data);
         })
@@ -43,13 +42,12 @@ export default class App extends React.Component {
 	}
 
 	searchButton() {
-		// possibly async?
 		this.searchRequest();
 		this.clearInput();
 	}
 
 	searchRequest() {
-		axios.post("/lyrics", {
+		axios.post("http://localhost:6000/lyrics", {
 				title: this.state.title,
 				artist: this.state.artist
 			})
