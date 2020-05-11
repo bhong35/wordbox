@@ -2,4 +2,4 @@
 
 'npm run start-server' for server.
 
-Requires config.js file with musixmatch api key.
+Requires config.js file with musixmatch api key in root directory.
