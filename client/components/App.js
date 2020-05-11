@@ -17,16 +17,6 @@ export default class App extends React.Component {
         // this.clearInput = this.clearInput.bind(this);
         this.onClick = this.onClick.bind(this);
     }
-    
-    onClick() {
-        axios.get('http://localhost:6000/test')
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
 
 	recordResponse(event) {
 		if (event.target.id === "title") {
@@ -47,7 +37,7 @@ export default class App extends React.Component {
 	}
 
 	searchRequest() {
-		axios.post("http://localhost:6000/lyrics", {
+		axios.post("/lyrics", {
 				title: this.state.title,
 				artist: this.state.artist
 			})
@@ -74,7 +64,7 @@ export default class App extends React.Component {
 
 	render() {
 		return (
-			<div onClick={this.onClick}>
+			<div>
 				<h1>WordBox</h1>
 				Artist:
 				<input
